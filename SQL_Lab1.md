@@ -207,6 +207,12 @@ WHERE
     The join uses the ```FOR SYSTEM_TIME AS OF``` keyword, making it a temporal join. Temporal joins are more efficient than regular joins because they use the time-based nature of the data, enriching each order with product information available at the order's creation time. If product details change later, the join result remains unchanged, reflecting the original order context. Additionally, temporal joins are preferable as regular joins would require Flink to keep the state indefinitely.
 
 5. Now let's sink the new data product to our data warehourse. 
+   ```sql
+    SELECT
+    *
+    FROM
+        "mydb"."public"."unique_payments";
+   ```
 
 <details>
 <summary>Click to expand Amazon Redshift instructions</summary>
