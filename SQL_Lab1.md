@@ -122,34 +122,7 @@ WHERE
     ALTER TABLE `<CONFLUENT_ENVIRONEMNT_NAME>`.`<CONFLUENT_CLUSTER_NAME>`.`shiftleft.public.orders` MODIFY WATERMARK FOR `orderdate` AS `orderdate`;
     ```
 
-3. To perform a temporal join with ```products``` table, the ```products``` table needs to have a ```PRIMARY KEY```. Which is not defined at the moment. Create a new table that has the same schema as ```products``` table but with a PRIMARY KEY constraint
-
-    ```sql
-    SET 'client.statement-name' = 'products-with-pk-materializer';
-    CREATE TABLE `products_with_pk` (
-        `productid` INT NOT NULL,
-        `brand` STRING NOT NULL,
-        `productname` STRING NOT NULL,
-        `category` STRING NOT NULL,
-        `description` STRING,
-        `color` STRING,
-        `size` STRING,
-        `price` INT NOT NULL,
-        PRIMARY KEY (`productid`) NOT ENFORCED
-    )
-    AS
-    SELECT  `productid`,
-        `brand`,
-        `productname`,
-        `category`,
-        `description`,
-        `color`,
-        `size`,
-        CAST(price AS INT) AS price
-    FROM `shiftleft.public.products`;
-    ```
-
-4. Join all relevant tables to gain insights into each order's contents, including product details, brand, quantity purchased, and the total amount for each order item, along with customer information. The query applies filters to ensure that only valid products with non-empty names and positive prices are included in the result set.
+3. Join all relevant tables to gain insights into each order's contents, including product details, brand, quantity purchased, and the total amount for each order item, along with customer information. The query applies filters to ensure that only valid products with non-empty names and positive prices are included in the result set.
 
     This analysis is useful for understanding product sales trends, calculating revenue, and generating reports on order compositions.
 
@@ -206,7 +179,7 @@ WHERE
    ```
     The join uses the ```FOR SYSTEM_TIME AS OF``` keyword, making it a temporal join. Temporal joins are more efficient than regular joins because they use the time-based nature of the data, enriching each order with product information available at the order's creation time. If product details change later, the join result remains unchanged, reflecting the original order context. Additionally, temporal joins are preferable as regular joins would require Flink to keep the state indefinitely.
 
-5. Redshift Query 
+4. Redshift Query 
    ```sql
     SELECT
     *
