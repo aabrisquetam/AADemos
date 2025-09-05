@@ -104,7 +104,7 @@ Lets create a table where we can get alerts based on out stock inventory being b
 FROM
   `shiftleft.public.products`
 WHERE
-  stock < 50;<img width="734" height="324" alt="image" src="https://github.com/user-attachments/assets/62c14980-f612-4c18-b09d-1a862ec6f58b" />
+  stock < 50;
 
    ```
 
