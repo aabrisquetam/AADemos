@@ -96,7 +96,7 @@ The new data product holds a single entry for each customer and the key is `cust
 Lets create a table where we can get alerts based on out stock inventory being below 50: 
 
    ```sql
-    SELECT
+SELECT
   productid,
   productname,
   stock,
