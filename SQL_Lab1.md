@@ -92,6 +92,21 @@ WHERE c.__deleted IS NULL OR c.__deleted <> 'true';
 
 The new data product holds a single entry for each customer and the key is `customerid`.
 
+### Stock Alerts: 
+Lets create a table where we can get alerts based on out stock inventory being below 50: 
+
+   ```sql
+    SELECT
+  productid,
+  productname,
+  stock,
+  'Low Stock: Quantity below 50!' AS alert_message
+FROM
+  `shiftleft.public.products`
+WHERE
+  stock < 50;<img width="734" height="324" alt="image" src="https://github.com/user-attachments/assets/62c14980-f612-4c18-b09d-1a862ec6f58b" />
+
+   ```
 
 
 ### 1a: Product Sales Data Product
