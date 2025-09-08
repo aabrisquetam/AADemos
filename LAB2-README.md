@@ -47,10 +47,10 @@ However, before joining both streams together we need to make sure that there ar
 
 2. To fix this run the following query in a new Flink cell
    ```sql
-   SET 'client.statement-name' = 'unique-payments-maintenance';
+   SET 'client.statement-name' = 'unique-payments-maintenanceAA';
    SET 'sql.state-ttl' = '1 hour';
 
-   CREATE TABLE unique_payments (
+   CREATE TABLE unique_paymentsAA (
    order_id INT NOT NULL,
    product_id INT,
    customer_id INT,
