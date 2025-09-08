@@ -14,7 +14,7 @@
     FROM
         `shiftleft.public.customers`
     ```
-   ![Masked Message](./assets/LAB1_msg.png)
+
 
 ### De-normalization - preparing Customer data
 
@@ -107,6 +107,13 @@ WHERE
   stock < 50;
 
    ```
+4. Redshift Query - [Amazon Redshift Query V2 Editor page](https://us-east-1.console.aws.amazon.com/sqlworkbench/home?region=us-east-1)
+   ```sql
+    SELECT
+    *
+    FROM
+        "mydb"."public"."unique_payments";
+   ```
 
 
 ### 1a: Product Sales Data Product
@@ -179,13 +186,6 @@ WHERE
    ```
     The join uses the ```FOR SYSTEM_TIME AS OF``` keyword, making it a temporal join. Temporal joins are more efficient than regular joins because they use the time-based nature of the data, enriching each order with product information available at the order's creation time. If product details change later, the join result remains unchanged, reflecting the original order context. Additionally, temporal joins are preferable as regular joins would require Flink to keep the state indefinitely.
 
-4. Redshift Query - [Amazon Redshift Query V2 Editor page](https://us-east-1.console.aws.amazon.com/sqlworkbench/home?region=us-east-1)
-   ```sql
-    SELECT
-    *
-    FROM
-        "mydb"."public"."unique_payments";
-   ```
 
 <details>
 <summary>Click to expand Amazon Redshift instructions</summary>
