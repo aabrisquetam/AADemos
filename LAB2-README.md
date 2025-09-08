@@ -3,14 +3,6 @@
 
 In this use case, we utilize Confluent Cloud and Apache Flink to validate payments and create completed orders, creating a valuable data product that could be used to analyse daily sales trends to empower sales teams to make informed business decisions.
 
-While such analyses are typically conducted within a Lakehouse—as demonstrated in use cases 1 and 2. Confluent offers multiple integration options to seamlessly bring data streams into Lakehouses. This includes a suite of connectors that read data from Confluent and write to various engines. Another option is [Tableflow](https://www.confluent.io/product/tableflow/) .
-
-Tableflow simplifies the process of transferring data from Confluent into a data lake, warehouse, or analytics engine. It enables users to convert Kafka topics and their schemas into Apache Iceberg tables with zero effort, significantly reducing the engineering time, compute resources, and costs associated with traditional data pipelines. This efficiency is achieved by leveraging Confluent's Kora Storage Layer and a new metadata materializer that works with Confluent Schema Registry to manage schema mapping and evolution.
-
-Since sales team in our fictitious company store all their data in Iceberg format. Instead of sending data to S3 and transforming it there, we’ll leverage Tableflow, which allows Confluent to handle the heavy lifting of data movement, conversion, and compaction. With Tableflow enabled, data stored in a Confluent topic, is ready for analytics in Iceberg format.
-
-![Architecture](./assets/LAB2.png)
-
 
 But before doing this, let's make sure that the data is reliable and protected first.
 
@@ -33,38 +25,6 @@ The rules were already created by Terraform, there is no need to do anything her
 2. To validate that it is working go to the DLQ topic and inspect the message headers there.
 
 ![Data Quality Rule](./assets/LAB2_msgdlq.png)
-
-
-##### **Data Protection using Confluent Cloud Client Side Field Level Encryption**
-
-[Client Side Field Level Encryption(CSFLE)](https://docs.confluent.io/cloud/current/security/encrypt/csfle/client-side.html) in Confluent Cloud works by setting the rules in Confluent Schema registry, these rules are then pushed to the clients, where they are enforced. The symmetric key is created in provider and the client should have necessary permission the provider and the client should have permission to use the key to encrypt the data.
-
-1. In the `payments` topic we notice that, the topic contains credit card information in unencrypted form.
-    ![Architecture](./assets/LAB2_msg.png)
-
-This field should be encrypted, the Symmetric Key was already created by the Terraform in AWS KMS. The key ARN was also imported to Confluent by Terraform. We just need to create the rule in Confluent
-
-2. In the [`payments`](
-   https://confluent.cloud/go/topics) Topic UI, select **Data Contracts** then click **Evolve**. Tag `cc_number` field as `PII`.
-
-2. Click **Rules** and then **+ Add rules** button. Configure as the following:
-   * Category: Data Encryption Rule
-   * Rule name: `Encrypt_PII`
-   * Encrypt fields with: `PII`
-   * using: The key added by Terraform (probably called CSFLE_Key)
-
-    Then click **Add** and **Save**
-
-    Our rule instructs the serializer to encrypt any field in this topic that is tagged as PII
-
-    ![CSFLE Rule](./assets/LAB2_rule.png)
-4. Restart the ECS Service for the changes to take effect immediately. Run ```terraform output``` to get the ECS command that should be used to restart the service. The command should look like this:
-   ```
-   aws ecs update-service --cluster <ECS_CLUSTER_NAME> --service payment-app-service --force-new-deployment
-   ```
-5. Go back to the `payments` Topic UI, you can see that the Credit number is now encrypted.
-
-    ![Encrypted Field](./assets/LAB2_msgenc.png)
 
 
 ### **Analyzing Daily Sales Trends using Confluent Cloud for Apache Flink**
