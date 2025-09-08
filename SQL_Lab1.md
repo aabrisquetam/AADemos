@@ -28,7 +28,7 @@ SELECT * FROM `shiftleft.public.customers`;
 Notice that Customer data includes references to the address table. To create our customer data product, we will denormalize the customer information by joining it with the address table.
 
 ```sql
-SET 'client.statement-name' = 'enriched-customer-materializer';
+SET 'client.statement-name' = 'enriched-customer-materializerAA';
 CREATE TABLE enriched_customers (
   customerid INT,
   customername STRING,
@@ -138,7 +138,7 @@ WHERE
    
    ```sql
    SET 'sql.state-ttl' = '1 DAYS';
-   SET 'client.statement-name' = 'product-sales-materializer';
+   SET 'client.statement-name' = 'product-sales-materializerAA';
    CREATE TABLE product_sales (
         orderdate TIMESTAMP_LTZ(3),
         orderid INT,
